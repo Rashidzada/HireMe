@@ -1,0 +1,127 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ meta_title|default:"HireMe" }}</title>
+    <meta name="description" content="{{ meta_description|default:'HireMe is a mini freelance marketplace.' }}">
+    <link rel="canonical" href="{{ canonical_url|default:request.build_absolute_uri }}">
+    <meta property="og:title" content="{{ meta_title|default:'HireMe' }}">
+    <meta property="og:description" content="{{ meta_description|default:'HireMe is a mini freelance marketplace.' }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ canonical_url|default:request.build_absolute_uri }}">
+    {% if og_image %}
+      <meta property="og:image" content="{{ og_image }}">
+    {% endif %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm bg-white navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{% url 'core:home' %}">HireMe</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="{% url 'marketplace:freelancer-list' %}">Browse</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'core:about' %}">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'core:contact' %}">Contact</a></li>
+          </ul>
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+            {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-bell"></i>
+                  <span id="notifications-count" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                    {{ unread_notifications }}
+                  </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow" style="width: 320px;" id="notifications-list">
+                  <li class="dropdown-header">Notifications</li>
+                  {% for notification in recent_notifications %}
+                    <li>
+                      <a class="dropdown-item small" href="{% url 'notifications:mark-read' notification.pk %}">
+                        {{ notification.verb }}
+                      </a>
+                    </li>
+                  {% empty %}
+                    <li><span class="dropdown-item-text small text-muted">No notifications yet.</span></li>
+                  {% endfor %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-center" href="{% url 'notifications:list' %}">View all</a></li>
+                </ul>
+              </li>
+              <li class="nav-item position-relative">
+                <a class="nav-link" href="{% url 'messaging:thread-list' %}" aria-label="Messages">
+                  <i class="bi bi-chat-dots"></i>
+                  <span id="messages-count" class="badge bg-primary rounded-pill position-absolute top-0 start-100 translate-middle">
+                    {{ unread_messages }}
+                  </span>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ user.full_name }}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                  {% if user.is_freelancer %}
+                    <li><a class="dropdown-item" href="{% url 'profiles:overview' %}">My Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'dashboard:freelancer-dashboard' %}">Dashboard</a></li>
+                  {% else %}
+                    <li><a class="dropdown-item" href="{% url 'dashboard:client-dashboard' %}">Dashboard</a></li>
+                  {% endif %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <form method="post" action="{% url 'accounts:logout' %}">
+                      {% csrf_token %}
+                      <button class="dropdown-item" type="submit">Logout</button>
+                    </form>
+                  </li>
+                </ul>
+              </li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+              <li class="nav-item">
+                <a class="btn btn-primary btn-sm" href="{% url 'accounts:register' %}">Join</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="{% if user.is_authenticated %}container-fluid{% else %}container{% endif %} py-4">
+      {% include "partials/messages.html" %}
+      <div class="{% if user.is_authenticated %}row g-4{% endif %}">
+        {% if user.is_authenticated %}
+          <aside class="col-lg-3 col-xl-2">
+            {% include "partials/sidebar.html" %}
+          </aside>
+        {% endif %}
+        <main class="{% if user.is_authenticated %}col-lg-9 col-xl-10{% endif %}">
+          {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+
+    <footer class="py-4 border-top bg-white">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center">
+        <p class="mb-0 text-muted small">&copy; {% now "Y" %} HireMe. Built with Django.</p>
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'core:terms' %}">Terms</a></li>
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'core:contact' %}">Contact</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% if user.is_authenticated %}
+      <script src="{% static 'js/notifications.js' %}"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

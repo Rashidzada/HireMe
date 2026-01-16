@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h1 class="h4">{{ hire_request.subject }}</h1>
+        <p class="text-muted">Status: <span class="badge bg-secondary text-uppercase">{{ hire_request.status }}</span></p>
+      </div>
+      {% if user.is_client %}
+        <form method="post" action="{% url 'requests:cancel' hire_request.pk %}">
+          {% csrf_token %}
+          <button class="btn btn-outline-danger" type="submit">Cancel</button>
+        </form>
+      {% endif %}
+    </div>
+    <p>{{ hire_request.message }}</p>
+    <div class="row g-3">
+      <div class="col-md-4"><strong>Budget:</strong> {{ hire_request.budget|default:"N/A" }}</div>
+      <div class="col-md-4"><strong>Timeline:</strong> {{ hire_request.timeline|default:"N/A" }}</div>
+      <div class="col-md-4"><strong>Attachment:</strong>
+        {% if hire_request.attachment %}
+          <a href="{{ hire_request.attachment.url }}">Download</a>
+        {% else %}
+          N/A
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if user.is_freelancer and hire_request.status == "pending" %}
+    <div class="card p-4 mb-4">
+      <h2 class="h6">Update status</h2>
+      <a class="btn btn-success" href="{% url 'requests:status' hire_request.pk %}">Accept / Reject</a>
+    </div>
+  {% endif %}
+
+  {% if thread %}
+    <div class="card p-4">
+      <h2 class="h6">Conversation</h2>
+      <a class="btn btn-outline-primary" href="{% url 'messaging:thread-detail' thread.pk %}">Open Chat</a>
+    </div>
+  {% endif %}
+{% endblock %}

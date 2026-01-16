@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="h4 mb-4">Client Dashboard</h1>
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card p-3 stat-card">
+        <div class="text-muted small">Requests</div>
+        <div class="h3 mb-0">{{ stats.requests_count }}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 stat-card">
+        <div class="text-muted small">Unread Messages</div>
+        <div class="h3 mb-0">{{ stats.unread_messages }}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 stat-card">
+        <div class="text-muted small">Profile Completeness</div>
+        <div class="h3 mb-0">{{ stats.profile_completeness }}%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card p-4">
+        <h5>Recent Activity</h5>
+        <ul class="list-group list-group-flush">
+          {% if recent_requests or recent_messages %}
+            {% for req in recent_requests %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Request: {{ req.subject }}</span>
+                <span class="badge bg-secondary text-uppercase">{{ req.status }}</span>
+              </li>
+            {% endfor %}
+            {% for msg in recent_messages %}
+              <li class="list-group-item">
+                Message from {{ msg.sender.full_name }}: {{ msg.body|truncatechars:80 }}
+              </li>
+            {% endfor %}
+          {% else %}
+            <li class="list-group-item text-muted">No activity yet.</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card p-4">
+        <h5>Alerts</h5>
+        <ul class="list-group list-group-flush">
+          {% for alert in alerts %}
+            <li class="list-group-item">{{ alert.verb }}</li>
+          {% empty %}
+            <li class="list-group-item text-muted">No alerts.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

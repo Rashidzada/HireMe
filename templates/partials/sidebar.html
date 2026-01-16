@@ -1,0 +1,34 @@
+<div class="card shadow-sm sidebar">
+  <div class="card-body">
+    <h6 class="text-uppercase text-muted mb-3">Workspace</h6>
+    <div class="list-group list-group-flush">
+      {% if user.is_freelancer %}
+        <a class="list-group-item list-group-item-action" href="{% url 'dashboard:freelancer-dashboard' %}">
+          <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'profiles:overview' %}">
+          <i class="bi bi-person-badge me-2"></i>Profile
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'requests:list' %}">
+          <i class="bi bi-briefcase me-2"></i>Requests
+        </a>
+      {% else %}
+        <a class="list-group-item list-group-item-action" href="{% url 'dashboard:client-dashboard' %}">
+          <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'marketplace:freelancer-list' %}">
+          <i class="bi bi-search me-2"></i>Find Freelancers
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'requests:list' %}">
+          <i class="bi bi-briefcase me-2"></i>Requests
+        </a>
+      {% endif %}
+      <a class="list-group-item list-group-item-action" href="{% url 'messaging:thread-list' %}">
+        <i class="bi bi-chat-left-text me-2"></i>Messages
+      </a>
+      <a class="list-group-item list-group-item-action" href="{% url 'notifications:list' %}">
+        <i class="bi bi-bell me-2"></i>Notifications
+      </a>
+    </div>
+  </div>
+</div>

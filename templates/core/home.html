@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="hero mb-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <h1 class="display-5">Hire and get hired without the noise.</h1>
+        <p class="lead text-muted">HireMe is a focused freelance marketplace for quick collaboration, clear scope, and real-time messaging.</p>
+        <div class="d-flex gap-2">
+          <a class="btn btn-primary btn-lg" href="{% url 'accounts:register' %}">Join as Freelancer</a>
+          <a class="btn btn-outline-secondary btn-lg" href="{% url 'marketplace:freelancer-list' %}">Browse Talent</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h5 class="mb-3">Why HireMe?</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Role-based dashboards and profiles</li>
+            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Fast hire requests with built-in chat</li>
+            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Real-time notifications</li>
+            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>SEO-friendly public profiles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="row g-4">
+    <div class="col-md-4">
+      <div class="card p-4 h-100">
+        <h6 class="text-uppercase text-muted">For Clients</h6>
+        <p>Search, shortlist, and send structured hire requests with budget and timeline fields.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 h-100">
+        <h6 class="text-uppercase text-muted">For Freelancers</h6>
+        <p>Showcase skills, education, and portfolio work with clean, modern profiles.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 h-100">
+        <h6 class="text-uppercase text-muted">Real-Time</h6>
+        <p>Stay on top of new requests and messages with live updates.</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

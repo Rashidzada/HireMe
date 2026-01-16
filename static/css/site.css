@@ -1,0 +1,66 @@
+:root {
+  --brand: #0f766e;
+  --brand-dark: #115e59;
+  --accent: #f97316;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --bg: #f8fafc;
+}
+
+body {
+  background: radial-gradient(circle at top left, #f1f5f9 0%, #ffffff 55%, #f8fafc 100%);
+  color: var(--ink);
+}
+
+.navbar-brand {
+  color: var(--brand);
+}
+
+.navbar-brand:hover {
+  color: var(--brand-dark);
+}
+
+.btn-primary {
+  background-color: var(--brand);
+  border-color: var(--brand);
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-dark);
+  border-color: var(--brand-dark);
+}
+
+.badge.bg-danger {
+  background-color: var(--accent) !important;
+}
+
+.hero {
+  background: linear-gradient(120deg, #e2f3f1 0%, #ffffff 60%);
+  border-radius: 24px;
+  padding: 48px;
+}
+
+.hero h1 {
+  font-weight: 700;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.stat-card {
+  border-left: 4px solid var(--brand);
+}
+
+.sidebar .list-group-item {
+  border: none;
+  padding: 0.75rem 0;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 50%;
+}
