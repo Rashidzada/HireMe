@@ -118,4 +118,4 @@ Pull requests are welcome. Please:
 - Add tests for new behavior when possible
 
 ## License
-Add a LICENSE file to define how the project can be used.
+MIT License. See `LICENSE`.
